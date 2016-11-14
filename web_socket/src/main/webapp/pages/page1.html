@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>webSocket Example1</title>
+</head>
+<body>
+<div class="container">
+<h1>title</h1>
+<p>press submit</p>
+<button id="openBtn">open</button>
+<button id="closeBtn">close</button>
+<input type="text" id="message">
+<button id="sendBtn">send</button>
+<textarea id="textArea"></textarea>
+</div>
+</body>
+<script>
+window.onload = function () {
+	var openBtnObj     = document.getElementById("openBtn");
+	var sendBtnObj     = document.getElementById("sendBtn");
+	var closeBtnObj    = document.getElementById("closeBtn");
+	var messageObj     = document.getElementById("message");
+	var textAreaObj    = document.getElementById("textArea");
+	
+	var wsUri = "ws://echo.websocket.org/";
+	var websocket = new WebSocket(wsUri);
+
+	openBtnObj.addEventListener("click", function () {
+		console.log(websocket);
+	});
+	
+	websocket.onopen = function(e) { 
+		console.log(e);
+	};
+	
+	websocket.onmessage = function(e) { 
+		textAreaObj.innerText = e.data;
+	};
+	
+	sendBtnObj.addEventListener("click", function () {
+		doSend(messageObj.value);
+	});
+	
+	var doSend = function (message) {
+	  websocket.send(message);
+	};
+	
+};
+</script>
+</html>
