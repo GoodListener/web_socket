@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../lib/jquery-3.1.1.js"></script>
+<style>
+.container {
+  width: 800px;
+  height: 500px;
+  border: 1px solid gray;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border: 2px solid black;
+  border-radius: 3px;
+  position: absolute;
+  cursor: default;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+</div>
+<script>
+$(document).ready(function () {
+	
+	var wsUri = "ws://localhost/websocket/websocket/myHandler.do";
+	var websocket = new WebSocket(wsUri);
+	
+	
+	$(".container").click(function (e) {
+		var container = $(".container");
+		var dot = $("<span class='dot'></span>");
+ 		dot.css({top: e.offsetY + "px" ,left: e.offsetX + "px"});
+		container.append(dot);
+		
+		websocket.send(e.offsetY + "," + e.offsetX);
+	});
+	
+	websocket.onmessage = function (message) {
+		var offset = message.data.split(',');
+		
+		var container = $(".container");
+	  var dot = $("<span class='dot'></span>");
+	  dot.css({top: offset[0] + "px" ,left: offset[1] + "px"});
+	  container.append(dot);
+	};
+	
+	websocket.onclose = function (message) {
+		console.log(message);
+	};
+	
+});
+</script>
+</body>
+</html>
