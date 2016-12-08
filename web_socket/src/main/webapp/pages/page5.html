@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../lib/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="../js/ctrl/playCtrl.js"></script>
+<link rel="stylesheet" href="../css/play/play.css"/>
+</head>
+<body>
+<button id="startBtn">start</button>
+<div class="container">
+<canvas class="gameCanvas" id="gameBoard" width="600" height="500"></canvas>
+</div>
+<p id="connectMessage">연결 상태</p>
+<script>
+$(document).ready(function () {
+	
+	var websocket;
+	
+	var drawFlag = false;
+	
+	$("#startBtn").click(function () {
+		var wsUri = "ws://"+ location.host +"/websocket/websocket/myHandler.do";
+		websocket = new WebSocket(wsUri);
+		
+		websocket.onopen = function (message) {
+	    $("#connectMessage").text("연결에 성공했습니다.");
+	    $("#startBtn").remove();
+	    playCtrl.init("gameBoard");
+	  };
+	  
+	  websocket.onclose = function (message) {
+	    $("#connectMessage").text("연결이 끊어졌습니다.");
+	  };
+	  
+	  websocket.onmessage = function (message) {
+		  if (message.data == "start") {
+			  playCtrl.startDrawLine();
+		  } else {
+			  var position = JSON.parse(message.data);
+				playCtrl.drawLine(position);
+		  }
+	  }
+	});
+	
+	$("#gameBoard").mousedown(function (e) {
+		drawFlag = true;
+		var position = {x : e.offsetX, y : e.offsetY};
+		playCtrl.startDrawLine(position);
+		websocket.send("start");
+	});
+	
+	$("#gameBoard").mousemove(function (e) {
+		if (drawFlag) {
+			var position = {x : e.offsetX, y : e.offsetY};
+			playCtrl.drawLine(position);
+			websocket.send(JSON.stringify(position));
+		}
+	});
+	
+	$("#gameBoard").mouseup(function (e) {
+	    drawFlag = false;
+	    websocket.send("end");
+	});
+	
+// 	$("#gameBoard").on("touchstart", function (e) {
+// 	    var position = {x : e.offsetX, y : e.offsetY};
+// 	    drawFlag = true;
+// 	    playCtrl.startDrawLine(position);
+// 	    websocket.send(JSON.stringify(e));
+// 	  });
+	  
+// 	  $("#gameBoard").on("touchmove", function (e) {
+// 	    if (drawFlag) {
+// 	      position = {x : e.offsetX, y : e.offsetY};
+// 	      playCtrl.drawLine(position);
+// 	      websocket.send(JSON.stringify(e));
+// 	    }
+// 	  });
+	  
+// 	  $("#gameBoard").on("touchend", function (e) {
+// 	      drawFlag = false;
+// 	  });
+	
+	
+});
+</script>
+</body>
+</html>

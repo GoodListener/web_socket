@@ -25,10 +25,13 @@
 <body>
 <div class="container">
 </div>
+<div class="wrapper">
+  <p id="connectMessage"></p>
+</div>
 <script>
 $(document).ready(function () {
 	
-	var wsUri = "ws://localhost/websocket/websocket/myHandler.do";
+	var wsUri = "ws://"+ location.host +"/websocket/websocket/myHandler.do";
 	var websocket = new WebSocket(wsUri);
 	
 	
@@ -51,7 +54,11 @@ $(document).ready(function () {
 	};
 	
 	websocket.onclose = function (message) {
-		console.log(message);
+		$("#connectMessage").text("연결이 끊어졌습니다.");
+	};
+	
+	websocket.onopen = function (message) {
+		$("#connectMessage").text("연결에 성공했습니다.");
 	};
 	
 });

@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.gameCanvas {
+  border: 1px solid gray;
+}

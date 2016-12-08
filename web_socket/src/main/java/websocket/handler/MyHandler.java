@@ -14,25 +14,40 @@ public class MyHandler extends TextWebSocketHandler {
   
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    System.out.println(message);
-    TextMessage echoMessage = new TextMessage(message.getPayload());
+    TextMessage jsonData = new TextMessage(message.getPayload());
+//    String data = jsonData.getPayload();
+//    Position position = new Position();
+//    Gson gson = new Gson();
+//    position = gson.fromJson(data, Position.class);
+    
     for (WebSocketSession webSocketSession : webSocketSessionList)
     {
       if (!session.equals(webSocketSession) && webSocketSession.isOpen())
-        webSocketSession.sendMessage(echoMessage);
+        webSocketSession.sendMessage(jsonData);
     }
   }
+//  
+//  @Override
+//  public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+//    String jsonData = (String)message.getPayload();
+//    Gson gson = new Gson();
+//    Map<?, ?> map = gson.fromJson(jsonData, HashMap.class);
+//    
+//    for (WebSocketSession webSocketSession : webSocketSessionList) {
+//      if (!session.equals(webSocketSession) && webSocketSession.isOpen())
+//        webSocketSession.sendMessage((WebSocketMessage<?>) message.getPayload());
+//    }
+//  }
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    System.out.println(session);
+    System.out.println("startConnect : " + session);
     webSocketSessionList.add(session);
   }
   
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-    System.out.println(session);
-    System.out.println(status);
+    System.out.println("endConnect : " + session + status);
   }
   
 }

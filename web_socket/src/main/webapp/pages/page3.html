@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../lib/jquery-3.1.1.js"></script>
+<style>
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <button id="sendBtn">send</button>
+</div>
+<script>
+$(document).ready(function () {
+	
+	var wsUri = "ws://"+ location.host +"/websocket/websocket/myHandler.do";
+	var websocket = new WebSocket(wsUri);
+	
+	$("#sendBtn").click(function () {
+		var object = {'data' : 123, 'olleh': 234};
+		websocket.send(JSON.stringify(object));
+	});
+	
+	websocket.onclose = function (message) {
+		$("#connectMessage").text("연결이 끊어졌습니다.");
+	};
+	
+	websocket.onopen = function (message) {
+		$("#connectMessage").text("연결에 성공했습니다.");
+	};
+	
+});
+</script>
+</body>
+</html>
