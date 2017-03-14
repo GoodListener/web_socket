@@ -39,9 +39,9 @@
         class="org.apache.commons.dbcp.BasicDataSource" 
         destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://127.0.0.1:3306/java76"/>
-    <property name="username" value="java76"/>
-    <property name="password" value="1111"/>
+    <property name="url" value="jdbc:mysql://127.0.0.1:3306/flock"/>
+    <property name="username" value="root"/>
+    <property name="password" value="1234"/>
   </bean>
   
   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

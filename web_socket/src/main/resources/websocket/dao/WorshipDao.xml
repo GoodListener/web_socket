@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="websocket.dao.WorshipDao">
+	<resultMap type="websocket.domain.Worship" id="ResultMap">
+		<id 	column="WORSHIP_NO" 	javaType="int" 		property="worshipNo"/>
+		<result column="WORSHIP_DATE"	javaType="date" 	property="worshipDate"/>
+		<result column="WORSHIP_LEADER"	javaType="String" 	property="worshipLeader"/>
+		<result column="WORSHIP_WEEK"	javaType="int" 		property="worshipWeek"/>
+	</resultMap>
+	
+	<select id="selectByPrimaryKey" resultMap="ResultMap" parameterType="int">
+		select WORSHIP_NO, WORSHIP_DATE, WORSHIP_LEADER, WORSHIP_WEEK
+			from WORSHIP
+			where WORSHIP_NO = #{no}
+	</select>
+	
+	<select id="selectList" resultMap="ResultMap">
+		select WORSHIP_NO, WORSHIP_DATE, WORSHIP_LEADER, WORSHIP_WEEK
+			from WORSHIP
+	</select>
+</mapper>
+
+
+
+
+
+
